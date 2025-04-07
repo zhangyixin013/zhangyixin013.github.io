@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArcGIS地图应用</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            height: 60px;
+            background: #f8f9fa;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .basemap-gallery {
+            height: 120px;
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .basemap-card {
+            min-width: 100px;
+            height: 100px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .basemap-card:hover {
+            border-color: #0079c1;
+        }
+
+        arcgis-map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    
+    <!-- 加载所需SDK -->
+    <script src="https://js.arcgis.com/4.32/"></script>
+    <script type="module" src="https://js.arcgis.com/map-components/4.32/arcgis-map-components.esm.js"></script>
+    <script type="module" src="https://js.arcgis.com/calcite-components/3.0.3/calcite.esm.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
+</head>
+<body>
+    <header class="header">
+        <h1 style="color: #0079c1;">ArcGIS地图应用</h1>
+    </header>
+
+    <div class="map-container">
+        <arcgis-map 
+            item-id="237b9584339446a0b56317b5962a4971"
+            basemap="streets"
+            legend
+            scale
+            search
+            layer-list
+        >
+            <!-- 添加专题图层 -->
+            <arcgis-layer 
+                url="https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/USA_Counties/FeatureServer/0"
+            ></arcgis-layer>
+            
+            <!-- 微件定位 -->
+            <arcgis-search position="top-right"></arcgis-search>
+            <arcgis-layer-list position="top-left"></arcgis-layer-list>
+            <arcgis-legend position="bottom-left"></arcgis-legend>
+            <arcgis-scale-bar position="bottom-right"></arcgis-scale-bar>
+        </arcgis-map>
+    </div>
+
+    <div class="basemap-gallery" id="basemapGallery">
+        <!-- 底图库选项 -->
+        <calcite-card class="basemap-card" onclick="changeBasemap('streets')">
+            <img src="https://js.arcgis.com/4.32/esri/themes/base/images/basemap-icons/streets.jpg" 
+                 alt="街道图" 
+                 style="height: 100%;width: 100%;object-fit: cover;">
+            <span slot="footer">街道图</span>
+        </calcite-card>
+
+        <calcite-card class="basemap-card" onclick="changeBasemap('satellite')">
+            <img src="https://js.arcgis.com/4.32/esri/themes/base/images/basemap-icons/satellite.jpg" 
+                 alt="影像图" 
+                 style="height: 100%;width: 100%;object-fit: cover;">
+            <span slot="footer">卫星影像</span>
+        </calcite-card>
+
+        <calcite-card class="basemap-card" onclick="changeBasemap('topo')">
+            <img src="https://js.arcgis.com/4.32/esri/themes/base/images/basemap-icons/topo.jpg" 
+                 alt="地形图" 
+                 style="height: 100%;width: 100%;object-fit: cover;">
+            <span slot="footer">地形图</span>
+        </calcite-card>
+    </div>
+
+    <script>
+        function changeBasemap(basemapId) {
+            const mapElement = document.querySelector('arcgis-map');
+            mapElement.basemap = basemapId;
+        }
+    </script>
+</body>
+</html>
